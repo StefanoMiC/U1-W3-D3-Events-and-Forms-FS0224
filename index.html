@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM Events</title>
+
+</head>
+
+<body>
+    <main>
+        <h1>DOM Events</h1>
+        <!-- Gli eventi del DOM sono la nostra possibilità di collegarci ad un'azione specifica compiuta dall'utente, e non solo... -->
+        <!-- Il nostro lavoro sarà quello di associare funzionalità ad eventi specifici, cosicché il browser possa avviarle al momento giusto -->
+        <h2>I 3 modi per applicare un evento ad un elemento nel DOM:</h2>
+
+
+        <h4>1) Applicazione su TAG HTML come ATTRIBUTO DI EVENTO</h4>
+        <!-- in questo contesto usare le tonde identifica il riferimento alla funzione passato come stringa all'attributo -->
+        <button onclick="handleFirstButtonClick()">EVENTO APPLICATO COME ATTRIBUTO</button>
+
+        <h4>2) Applicazione tramite proprietà del nodo corrispondente</h4>
+        <!-- in questo contesto usare le tonde identifica il riferimento alla funzione passato come stringa all'attributo -->
+        <button id="second-btn">EVENTO APPLICATO COME PROPRIETA' DEL NODO DEL DOM</button>
+
+        <h4>3) Applicazione tramite metodo .addEventListener()</h4>
+        <button id="third-btn">EVENTO APPLICATO CON .addEventListener()</button>
+
+        <div class="card">
+            <h3>sono il testo di questo div</h3>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto hic, eius numquam dolorem fugiat,
+                cumque harum eum expedita similique reiciendis, obcaecati voluptatem. Sequi molestias illum tempora
+                itaque et rem atque.</p>
+            <button id="card-btn">Click me</button>
+        </div>
+    </main>
+
+    <script>
+        const handleFirstButtonClick = () => {
+            console.log("Hai avviato l'evento tramite attributo su HTML")
+        }
+
+        const secondBtn = document.getElementById("second-btn")
+        console.dir(secondBtn)
+
+        // stiamo prendendo il riferimento del nodo del dom (second-btn) e gli andiamo a forzare un cambiamento del valore della sua proprietà "onclick" 
+        // con all'interno una DEFINIZIONE di funzione
+
+        // fare questo 
+
+        // secondBtn.onclick = () => {
+        //     console.log("Hai avviato l'evento tramite proprietà onclick del nodo")
+        // }
+
+        // o questo è la stessa cosa 
+        const handleSecondButtonClick = () => {
+            console.log("Hai avviato l'evento tramite proprietà onclick del nodo")
+        }
+
+        secondBtn.onclick = handleSecondButtonClick
+        // qui stiamo passando il riferimento (reference) alla funzione
+        // MA NON LA STIAMO ASSOLUTAMENTE AVVIANDO
+
+        // qui la stiamo già avviando: ERRORE
+        // secondBtn.onclick = handleSecondButtonClick() // NON BISOGNA MAI ESEGUIRLA altrimenti non aspetterà l'evento e poi il click non funzionerà
+
+        const thirdBtn = document.getElementById("third-btn")
+
+        const handleThirdButtonClick = (event) => {
+            console.log("Hai avviato l'evento tramite metodo .addEventListener()")
+            console.log(event)
+            console.log(event.target)
+        }
+
+        // con questo metodo si perde la preposizione "on" tipica degli eventi negli altri due metodi
+
+        // thirdBtn.addEventListener("click", (event) => {
+        //     console.log("Hai avviato l'evento tramite metodo .addEventListener()")
+        // })
+
+        // node.addEventListener("nome evento", definizione di funzione)
+
+        // l'oggetto evento è creato dal browser e ci viene fornito attraverso il parametro della nostra funzione
+        // all'interno troviamo delle informazioni specifiche per il tipo di evento scatenato
+        // tra le altre informazioni troviamo anche target e currentTarget che sono fondamentali per ritrovare il NODO dell'elemento cliccato in maniera dinamica!
+        // thirdBtn.addEventListener("mousemove", (event) => { console.log("ti stai muovendo sopra al bottone!", event.offsetX, event.offsetY) })
+
+        // questo metodo ammette la possibilità di associare più di una funzione per lo stesso evento sullo stesso elemento
+        // questo metodo ammette anche di ricevere un oggetto di opzioni come terzo parametro
+        thirdBtn.addEventListener("click", handleFirstButtonClick, { once: true })
+        thirdBtn.addEventListener("click", handleSecondButtonClick, { once: true })
+        thirdBtn.addEventListener("click", handleThirdButtonClick)
+
+        // applichiamo un evento click alla card nella pagina
+        const card = document.querySelector(".card")
+        card.style.width = "300px"
+        card.style.marginTop = "1rem"
+        card.style.padding = "1rem"
+        card.style.border = "1px solid black"
+
+        card.addEventListener("click", (event) => {
+            // in questo caso il click che si scatena all'interno della card ci farà leggere il target dell'evento
+            // che in questo caso, quello di una card con dei figli all'interno, ci darà indietro l'effettivo nodo cliccato!
+            console.log("TARGET", event.target)
+
+            // in questo caso il click all'interno della card ricondurrà SEMPRE al nodo del PROPRIETARIO DELL'EVENTO: card
+            console.log("CURRENTTARGET", event.currentTarget) // la proprietà currentTarget ci torna indietro sempre il nodo su cui abbiamo associato l'evento
+        })
+
+    </script>
+</body>
+
+</html>
