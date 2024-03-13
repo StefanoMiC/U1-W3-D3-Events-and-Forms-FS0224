@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form e Input</title>
+</head>
+
+<body>
+    <h1>Cambiami...</h1>
+
+
+    <input id="myInput1" type="text" placeholder="evento input">
+    <br>
+    <input id="myInput2" type="text" placeholder="evento keyup">
+    <br>
+    <input id="myInput3" type="text" placeholder="evento change">
+    <br>
+    <input id="myInput4" type="text" placeholder="evento dissociato"> <button id="input-btn">invia</button>
+
+
+    <script>
+
+        const h1 = document.querySelector("h1")
+
+        // evento input si scatena per ogni pressione di una lettera normale all'interno dell'input stesso
+        const input = document.getElementById("myInput1")
+        input.addEventListener("input", (event) => {
+            console.dir(input)
+            console.log(event)
+            // h1.innerText = input.value
+            h1.innerText = event.target.value
+        })
+
+        // evento keydown / keyup si scatena per ogni pressione di un tasto della tastiera compresi quelli "speciali"
+        const input2 = document.getElementById("myInput2")
+        input2.addEventListener("keyup", (event) => {
+            console.log(event)
+            if (event.key === "Enter" && event.target.value.length > 0) {
+                console.log("Enter premuto")
+                h1.innerText = event.target.value
+            }
+        })
+
+        // evento change si scatena una sola volta alla pressione del tasto Enter, o qualora l'utente cambi "focus" ed uscisse dal campo input, cliccando altrove
+        const input3 = document.getElementById("myInput3")
+        input3.addEventListener("change", (event) => {
+            console.log(event)
+            h1.innerText = event.target.value
+        })
+
+
+        // const inputBtn = document.querySelector("#myInput4 + button")
+        const input4 = document.getElementById("myInput4")
+        input4.onchange = (event) => {
+            console.log(event)
+            h1.innerText = event.target.value
+        }
+
+        const inputBtn = document.getElementById("input-btn")
+        inputBtn.onclick = () => {
+            h1.innerText = input4.value
+        }
+
+
+    </script>
+</body>
+
+</html>
