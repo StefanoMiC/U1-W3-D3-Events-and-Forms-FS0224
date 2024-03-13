@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form handling</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            background-color: #ebebeb;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        input,
+        textarea,
+        button {
+            font-family: inherit;
+        }
+
+        h3 {
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+        }
+
+        main {
+            padding-inline: 2rem;
+            margin-top: 3rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin-inline: auto;
+            margin-block-start: 3rem;
+            background-color: white;
+            box-shadow: 0 3px 6px rgb(0 0 0 / 10%);
+            padding: 1rem;
+        }
+
+        .input-group {
+            margin-block-end: 0.5rem;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            border: 2px solid #c6c6c6;
+            padding-block: 0.25rem;
+            border-radius: 4px;
+        }
+
+        .card {
+            width: 25%;
+            margin-right: -4px;
+            display: inline-block;
+            border: 1px solid black;
+            padding: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- ricordatevi in questo caso di passare ASSOLUTAMENTE event come argomento alla funzione -->
+        <!-- <form id="myForm" onsubmit="handleSubmit(event)"> -->
+        <form id="myForm">
+            <div class="input-group">
+                <label for="name">Nome</label>
+                <input id="name" type="text" placeholder="Inserisci il tuo nome" required>
+            </div>
+            <div class="input-group">
+                <label for="role">Ruolo</label>
+                <input id="role" type="text" placeholder="Inserisci il tuo ruolo" required>
+            </div>
+            <div class="input-group">
+                <label for="specialty">Specialità</label>
+                <input id="specialty" type="text" placeholder="Inserisci la tua" required>
+            </div>
+            <div class="input-group">
+                <label for="bio">Bio</label>
+                <textarea id="bio" type="text" placeholder="Inserisci una breve descrizione" required></textarea>
+            </div>
+            <button type="submit">Invia</button>
+        </form>
+
+
+    </div>
+
+    <main>
+        <!--<div class="card">
+            <h3>Nome</h3>
+            <p>Ruolo</p>
+            <p>Specialità</p>
+            <p>Bio</p>
+
+            <button>Scopri di più</button>
+        </div> -->
+
+    </main>
+    <script>
+
+
+        const handleSubmit = (e) => {
+            // questa riga previene il comportamento di default del form che è il refresh della pagina
+            // IMPORTANTISSIMA!
+            e.preventDefault()
+            console.log("submit", e)
+
+            // seleziono tutti i campi input e li salvo in variabili dedicate (che conterranno il loro nodo)
+            const nameInput = document.getElementById("name");
+            const roleInput = document.getElementById("role");
+            const specialtyInput = document.getElementById("specialty");
+            const bioInput = document.getElementById("bio");
+
+
+            // creo un oggetto, tipicamente da inviare al server (lo faremo in JS 3)
+            const candidate = {
+                name: nameInput.value,
+                role: roleInput.value,
+                specialty: specialtyInput.value,
+                bio: bioInput.value
+            }
+            console.log(candidate)
+
+            // DOM MANIPULATION
+            // creiamo la card con i dati del form per poi inserirla nel main
+            const main = document.querySelector("main")
+            const card = document.createElement("div")
+            card.className = "card"
+
+            const name = document.createElement("h3")
+            name.innerText = candidate.name
+
+            const role = document.createElement("p")
+            role.innerText = candidate.role
+
+            const specialty = document.createElement("p")
+            specialty.innerText = candidate.specialty
+
+            const bio = document.createElement("p")
+            bio.innerText = candidate.bio
+
+            const btn = document.createElement("button")
+            btn.innerText = "colorami"
+
+            // applichiamo un evento all'elemento card appena creato
+            card.addEventListener("click", (e) => {
+                // card.style.borderColor = "red"
+
+                // questa funzione è in grado di colorare la card cliccata reperendo dinamicamente il nodo della card,
+                // che è l'elemento a cui abbiamo associato l'evento click
+                // con event.target avremmo corso il rischio di ricevere il nodo di h3, p, o button se il click fosse avvenuto su di loro
+                // questo problema si incontra solo quando abbiamo associato un evento click ad un contenitore di altri elementi,
+                // è meno problematico quando usato su input o bottoni semplici
+                event.currentTarget.style.border = "1px solid red"
+            })
+
+            btn.addEventListener("click", (e) => {
+                // in questo caso non c'è ambiguità su un possibile figlio cliccato perché il bottone non ha elementi figli
+                // usare e.target o e.currentTarget è in questo caso equivalente, prima non lo era.
+                e.target.closest(".card").remove() // quando clicchiamo il bottone partendo dal suo nodo risaliamo a cercare la prima .card e la rimuoviamo
+            })
+
+
+            // inseriamo gli elementi della card dentro ad essa
+            card.append(name, role, specialty, bio, btn)
+            // inseriamo la card in main e quindi nella pagina
+            main.appendChild(card)
+
+
+            // resettiamo i campi e preveniamo un secondo invio accidentale
+            nameInput.value = ""
+            roleInput.value = ""
+            specialtyInput.value = ""
+            bioInput.value = ""
+        }
+
+        const form = document.getElementById("myForm")
+        form.addEventListener("submit", handleSubmit)
+
+    </script>
+</body>
+
+</html>

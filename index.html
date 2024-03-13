@@ -18,7 +18,7 @@
 
         <h4>1) Applicazione su TAG HTML come ATTRIBUTO DI EVENTO</h4>
         <!-- in questo contesto usare le tonde identifica il riferimento alla funzione passato come stringa all'attributo -->
-        <button onclick="handleFirstButtonClick()">EVENTO APPLICATO COME ATTRIBUTO</button>
+        <button onclick="handleFirstButtonClick(event)">EVENTO APPLICATO COME ATTRIBUTO</button>
 
         <h4>2) Applicazione tramite proprietà del nodo corrispondente</h4>
         <!-- in questo contesto usare le tonde identifica il riferimento alla funzione passato come stringa all'attributo -->
@@ -37,7 +37,7 @@
     </main>
 
     <script>
-        const handleFirstButtonClick = () => {
+        const handleFirstButtonClick = (e) => {
             console.log("Hai avviato l'evento tramite attributo su HTML")
         }
 
@@ -54,7 +54,7 @@
         // }
 
         // o questo è la stessa cosa 
-        const handleSecondButtonClick = () => {
+        const handleSecondButtonClick = (e) => {
             console.log("Hai avviato l'evento tramite proprietà onclick del nodo")
         }
 
@@ -67,10 +67,10 @@
 
         const thirdBtn = document.getElementById("third-btn")
 
-        const handleThirdButtonClick = (event) => {
+        const handleThirdButtonClick = (e) => {
             console.log("Hai avviato l'evento tramite metodo .addEventListener()")
-            console.log(event)
-            console.log(event.target)
+            console.log(e)
+            console.log(e.target)
         }
 
         // con questo metodo si perde la preposizione "on" tipica degli eventi negli altri due metodi
